@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/master.css' %}">
+    <link rel="stylesheet" href="{% static 'https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/docs_min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap_min.css' %}">
+    <style>
+        .container{
+            width:800;
+            margin-top: 100px;
+            display: flex;
+            justify-content: space-around;
+        }
+        .welcome{
+            width:800;
+            margin: 50px auto 0px;
+            display: flex;
+            justify-content: space-around;
+            align-items: baseline;
+        }
+        .welcome h1{
+            margin-right: 650px;
+        }
+        .welcome .above_link{
+            display: flex;
+            justify-content: space-between;
+            width:200px;
+            margin-right: 10px;
+        }
+        a{
+            text-decoration: underline;
+        }
+        hr{
+            width: 1450px;
+            background-color: black;
+            margin:10px auto 0px;
+        }
+        .container form{
+            margin-top:50px;
+            margin-left:-130px;
+        }
+        .actions{
+            display: flex;
+            justify-content: space-between;
+        }
+        .container h1{
+            margin-left: -130px;
+        }
+        .error_message{
+            color: red;
+        }
+        .all_books h1{
+            margin-left: 0px;
+        }
+        .all_books a{
+            margin-left: 130px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="welcome">
+        <h1>Welcome , {{user.first_name}}</h1>
+        <div class="above_link">
+            <a href="/add_book_page">Add a new book</a>
+            <a href="/">Log Out</a>
+        </div>
+        
+    </div>
+    <hr>
+    <div class="container">
+      
+        
+    </div>
+</body>
+</html>

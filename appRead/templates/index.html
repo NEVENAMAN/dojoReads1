@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/master.css' %}">
+    <link rel="stylesheet" href="{% static 'https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/docs_min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap_min.css' %}">
+    <style>
+        .container{
+            width:800;
+            margin-top: 100px;
+            display: flex;
+            justify-content: space-around;
+        }
+        .container form{
+            margin-top:50px;
+            margin-left:-130px;
+        }
+        .actions{
+            display: flex;
+            justify-content: space-between;
+        }
+        .container h1{
+            margin-left: -130px;
+        }
+        .error_message{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="register">
+            <h1>Registeration</h1>
+            <form action="/register" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <div class="form-group">
+                        <label for="disabledTextInput">First Name</label>
+                        <input type="text" name="first_name"  id="disabledInput" class="form-control" placeholder="First Name">
+                    </div>
+                    {% for message in messages %}
+                            {% if message.extra_tags == 'first_name' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+                    {% endfor %}
+                    <div class="form-group">
+                        <label for="disabledTextInput">Last Name</label>
+                        <input type="text" name="last_name" class="form-control" placeholder="Last Name">
+                    </div>
+                    {% for message in messages %}
+                            {% if message.extra_tags == 'last_name' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+                    {% endfor %}
+                    <div class="form-group">
+                        <label for="disabledTextInput">Email</label>
+                        <input type="text" name="email" class="form-control" placeholder="email">
+                    </div>
+                    {% for message in messages %}
+                            {% if message.extra_tags == 'email' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+                    {% endfor %}
+                    <div class="form-group">
+                        <label for="disabledTextInput">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="password">
+                    </div>
+                    {% for message in messages %}
+                            {% if message.extra_tags == 'password_less_than' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+                            {% if message.extra_tags == 'password_notInclude_upper' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+                            {% if message.extra_tags == 'password_notInclude_lower' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+                            {% if message.extra_tags == 'password_notInclude_number' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+                            {% if message.extra_tags == 'password_symbol' %}
+                                <p class="error_message">* {{message}}</p>
+                            {% endif %}
+
+                    {% endfor %}
+                    <div class="form-group">
+                        <label for="disabledTextInput">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm password">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </fieldset>
+            </form>
+           
+        </div>
+        <div class="login">
+            <h1>Login </h1>
+            <form action="/login" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <div class="form-group">
+                        <label for="disabledTextInput">Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="disabledTextInput">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="password">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
