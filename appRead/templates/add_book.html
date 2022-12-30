@@ -93,8 +93,9 @@
                             <label for="disabledTextInput">Author :</label>
                             <select name="author_from_database" >
                                 <option></option>
-                                <option>aaaaaaaaaaaaaaa</option>
-                                <option>bbbbbbbbbbbbbbb</option>
+                                {% for author in authors %}
+                                <option>{{author.name}}</option>
+                                {% endfor %}
                             </select><br>
                             Or add a new author:
                             <input type="text" name="author_from_user"  class="form-control" placeholder="title">
@@ -130,7 +131,7 @@
                             </select>  stars.
                         </div>
                         
-                        <input type="hidden" name="user_id" value="{{request.session.userid}}">
+                        <input type="hidden" name="user_id_who_add" value="{{request.session.userid}}">
                         <button type="submit" class="btn btn-primary">Add Back and Review</button>
                     </fieldset>
                 </form>

@@ -109,3 +109,15 @@ def Add_Review(content,rating,user_id,book_title):
     book = Book.objects.filter( book_title = book_title)
     user = User.objects.get(id = user_id)
     return Review.objects.create(content = content , rating = rating , user = user , book=book[0])
+
+# get all authors
+def Get_Authors(request):
+    return Author.objects.all()
+
+# get all books
+def Get_Books(request):
+    return Book.objects.all()
+
+
+
+

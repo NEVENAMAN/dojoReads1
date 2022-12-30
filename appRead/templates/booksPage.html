@@ -61,6 +61,20 @@
         .all_books a{
             margin-left: 130px;
         }
+        .all_books_reviews{
+            width: 400px;
+            height: 100px;
+        }
+        .books_link{
+            width: 400px;
+            height: 100px;
+            border: 1px solid black;
+            overflow: scroll;
+            overflow-x: auto;
+        }
+        .book_info img{
+            background-color: yellow;
+        }
 
     </style>
 </head>
@@ -75,8 +89,28 @@
     </div>
     <hr>
     <div class="container">
-      
-        
+        <div class="book_info">
+            <h2>Recent Book Reviews :</h2>
+            {% for book in books %}
+            <a href="#">{{book.book_title}}</a><br>
+                {% for review in book.reviews.all %}
+                    Rating :{{review.rating}}
+                    {% for n in range(1,review.rating) %}
+                        <img src="{%static 'image/starIcon.png' %}" width="20">
+                    {% endfor %}
+                    <p><a href="#">{{review.user.first_name}} :</a> {{review.content}}</p>
+                    <i><p>Posted in {{review.created_at}}</p></i>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="all_books_reviews">
+            <h2>Other Books with Reviews :</h2>
+            <div class="books_link">
+                {% for book in books %}
+                <a href="#">{{book.book_title}}</a><br>
+            {% endfor %}
+            </div>   
+        </div>
     </div>
 </body>
 </html>

@@ -29,8 +29,13 @@ def login(request):
 def books_page(request):
     id = request.session['userid']
     user = User.objects.get(id = id)
+    books = Get_Books(request)
+    # for book in books:
+    #     print(book.book_title)
+
     context = {
         "user" : user , 
+        "books" : books ,
     }
     return render(request,'booksPage.html',context)
 
@@ -38,8 +43,10 @@ def books_page(request):
 def add_book_page(request):
     id = request.session['userid']
     user = User.objects.get(id = id)
+    authors = Get_Authors(request)
     context = {
         "user" : user , 
+        "authors" : authors ,
     }
     return render(request,'add_book.html',context)
 
