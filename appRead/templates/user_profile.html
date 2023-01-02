@@ -15,7 +15,8 @@
             width:800;
             margin-top: 100px;
             display: flex;
-            justify-content: space-around;
+            flex-direction:column;
+            justify-content: space-between;
         }
         .welcome{
             width:800;
@@ -30,7 +31,7 @@
         .welcome .above_link{
             display: flex;
             justify-content: space-between;
-            width:200px;
+            width:300px;
             margin-right: 10px;
         }
         a{
@@ -72,11 +73,11 @@
             overflow: scroll;
             overflow-x: auto;
         }
-        .book_info .yellow_star{
+        .book_info img{
             background-color: yellow;
         }
-        .book_info .grey_star{
-            background-color: none;
+        .book_review ul{
+            list-style: none;
         }
 
     </style>
@@ -85,38 +86,42 @@
     <div class="welcome">
         <h1>Welcome , {{user.first_name}}</h1>
         <div class="above_link">
-            <a href="/add_book_page">Add a new book</a>
-            <a href="/log_out">Log Out</a>
+            <a href="/books_page">Home</a>
+            <a href="/add_book_page">Add Book and Review</a>
+            <a href="/">Log Out</a>
         </div>
-        
     </div>
     <hr>
     <div class="container">
-        <div class="book_info">
-            <h2>Recent Book Reviews :</h2>
-            {% for book in books %}
-            <h4><a href="/book_info_page/{{book.id}}">{{book.book_title}}</a></h4>
-                {% for review in book.reviews %}
-                    Rating :
-                    {% for i in review.yellow_stars %}
-                        <img src="{%static 'image/starIcon.png' %}" width="20" class="yellow_star">
-                    {% endfor %}
-                    {% for i in review.grey_stars %}
-                        <img src="{%static 'image/starIcon.png' %}" width="20" class="grey_star">
-                    {% endfor %}
-                    <p><a href="/get_user_info/{{review.user.id}}">{{review.user.first_name}} :</a> {{review.content}}</p>
-                    <i><p>Posted in {{review.created_at}}</p></i>
-                {% endfor %}
-           {% endfor %}
-        </div>
-        <div class="all_books_reviews">
-            <h2>Other Books with Reviews :</h2>
-            <div class="books_link">
-                {% for book in books %}
-                <a href="/book_info_page/{{book.id}}">{{book.book_title}}</a><br>
+        <div class="user_data">
+            <table>
+                <tr>
+                    <td>User Alias : </td>
+                    <td>{{user.first_name}}</td>
+                </tr>
+                <tr>
+                    <td>Name :</td>
+                    <td>{{user.first_name}} {{user.last_name}}</td>
+                </tr>
+                <tr>
+                    <td>Email :</td>
+                    <td>{{user.email}}</td>
+                </tr>
+                <tr>
+                    <td>Total Reviews :</td>
+                    <td>{{num_of_reviews}}</td>
+                </tr>
+            </table>
+        </div><br><br>
+        <div class="book_review">
+            <h4>Posted Reviews on the following books : </h4>
+            <ul>
+            {% for review in user.reviews.all %}
+                <li><a href="/book_info_page/{{review.book.id}}">{{review.book.book_title}}</a></li>
             {% endfor %}
-            </div>   
+            </ul>
         </div>
     </div>
+
 </body>
 </html>

@@ -69,7 +69,7 @@ class Book(models.Model):
 
 class Review(models.Model):
     content = models.TextField()
-    rating = models.CharField(max_length=255)
+    rating = models.IntegerField()
     user = models.ForeignKey(User , related_name="reviews" , on_delete=models.CASCADE)
     book = models.ForeignKey(Book , related_name="reviews" , on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -92,8 +92,10 @@ def Login(request):
     if user:
         loged_user = user[0]
         if bcrypt.checkpw(request.POST['password'].encode(), loged_user.password.encode()):
-            request.session['userid'] = loged_user.id
-            return True
+            # request.session['userid'] = loged_user.id
+            return loged_user.id
+    else:
+        return None
 
 # add author
 def Add_Author(name):
@@ -116,8 +118,27 @@ def Get_Authors(request):
 
 # get all books
 def Get_Books(request):
-    return Book.objects.all()
+    return Book.objects.all().order_by('book_title')
 
+# get specific book info
+def Get_book_info(BookId):
+    print("*********** 1",BookId)
+    book = Book.objects.get(id = BookId)
+    print("*********** 2", book)
+    return book
 
+# get user data
+def Get_User(UserId):
+    return User.objects.get(id = UserId)
 
+# get number of reviews for user 
+def Get_number_of_Reviews_for_user(UserId):
+    count = 0
+    reviews = Review.objects.filter( user = UserId)
+    for one in reviews :
+        count += 1
+        print("$$$ " ,count)
+
+    return count
+   
 

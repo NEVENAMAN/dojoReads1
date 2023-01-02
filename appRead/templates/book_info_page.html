@@ -15,7 +15,7 @@
             width:800;
             margin-top: 100px;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
         }
         .welcome{
             width:800;
@@ -72,10 +72,25 @@
             overflow: scroll;
             overflow-x: auto;
         }
-        .book_info .yellow_star{
+        .book_info img{
             background-color: yellow;
         }
-        .book_info .grey_star{
+        .reviews{
+            width:600px;
+        }
+        .reviews hr{
+            width:auto;
+            background-color: black;
+            margin:10px auto 0px;
+            margin: 10px 0px;
+        }
+        .insert_review{
+            margin-top:-45px;
+        }
+        .reviews .yellow_star{
+            background-color: yellow;
+        }
+        .reviews .grey_star{
             background-color: none;
         }
 
@@ -85,37 +100,45 @@
     <div class="welcome">
         <h1>Welcome , {{user.first_name}}</h1>
         <div class="above_link">
-            <a href="/add_book_page">Add a new book</a>
-            <a href="/log_out">Log Out</a>
+            <a href="/books_page">Home</a>
+            <a href="/">Log Out</a>
         </div>
         
     </div>
     <hr>
     <div class="container">
-        <div class="book_info">
-            <h2>Recent Book Reviews :</h2>
-            {% for book in books %}
-            <h4><a href="/book_info_page/{{book.id}}">{{book.book_title}}</a></h4>
-                {% for review in book.reviews %}
-                    Rating :
-                    {% for i in review.yellow_stars %}
-                        <img src="{%static 'image/starIcon.png' %}" width="20" class="yellow_star">
-                    {% endfor %}
-                    {% for i in review.grey_stars %}
-                        <img src="{%static 'image/starIcon.png' %}" width="20" class="grey_star">
-                    {% endfor %}
-                    <p><a href="/get_user_info/{{review.user.id}}">{{review.user.first_name}} :</a> {{review.content}}</p>
-                    <i><p>Posted in {{review.created_at}}</p></i>
+        <div class="reviews">
+            <h3>{{book.book_title}}</h3>
+            <h6>Author: {{book.author.name}}</h6><br>
+            <h4>Reviews : </h4>
+            {% for review in book.reviews %}
+            <hr>
+                Rating :{{review.rating}}
+                {% for i in review.yellow_stars %}
+                    <img src="{%static 'image/starIcon.png' %}" width="20" class="yellow_star">
                 {% endfor %}
-           {% endfor %}
-        </div>
-        <div class="all_books_reviews">
-            <h2>Other Books with Reviews :</h2>
-            <div class="books_link">
-                {% for book in books %}
-                <a href="/book_info_page/{{book.id}}">{{book.book_title}}</a><br>
+                {% for i in review.grey_stars %}
+                    <img src="{%static 'image/starIcon.png' %}" width="20" class="grey_star">
+                {% endfor %}
+                <p><a href="/get_user_info/{{user.id}}">{{review.user.first_name}} :</a> {{review.content}}</p>
+                <i><p>Posted in {{review.created_at}}</p></i>
             {% endfor %}
-            </div>   
+           
+        </div>
+        <div class="insert_review">
+            <form action="/add_review_from_user/{{book.book_title}}" method="post">
+                {% csrf_token %}
+                <h4>Add a Review :</h4><br>
+                <textarea name="content" cols="40" rows="3"></textarea><br><br>
+                Rating : <select name="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select> Stars.<br><br>
+                <input type="submit" value="Submit Review" class="btn btn-primary">
+            </form>
         </div>
     </div>
 </body>
