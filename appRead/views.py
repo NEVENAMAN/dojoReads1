@@ -81,17 +81,19 @@ def books_page(request):
 
 # view add book page
 def add_book_page(request):
-    id = request.session['userid']
-    user = User.objects.get(id = id)
-    authors = Get_Authors(request)
-    for a in authors:
-        print("11 " , a.name )
-    context = {
-        "user" : user , 
-        "authors" : authors ,
-    }
-    return render(request,'add_book.html',context)
-
+    if 'userid' in request.session:
+        id = request.session['userid']
+        user = User.objects.get(id = id)
+        authors = Get_Authors(request)
+        for a in authors:
+            print("11 " , a.name )
+        context = {
+            "user" : user , 
+            "authors" : authors ,
+        }
+        return render(request,'add_book.html',context)
+    else:
+        return redirect('/')
 # add book process
 def add_book_process(request):
     error =Book.objects.book_validator(request.POST)
@@ -121,42 +123,43 @@ def add_book_process(request):
 
 # get specific book info
 def book_info_page(request,BookId):
+    if 'userid' in request.session:
+        id = request.session['userid']
+        user = User.objects.get(id = id)
+        book = Get_book_info(BookId)
+        
+        newBook = {
+            'book_title': book.book_title,
+            'author': book.author,
+            'id' : book.id,
+            'reviews': []
+        }
+        for review in book.reviews.all():
+            # print("### " , review.rating)
+            yellow_stars = []
+            grey_stars = []
+            for i in range(review.rating):
+                yellow_stars.append(i)
+            for i in range(5-review.rating):
+                grey_stars.append(i)
 
-    id = request.session['userid']
-    user = User.objects.get(id = id)
-    book = Get_book_info(BookId)
-    
-    newBook = {
-        'book_title': book.book_title,
-        'author': book.author,
-        'id' : book.id,
-        'reviews': []
-    }
-    for review in book.reviews.all():
-        # print("### " , review.rating)
-        yellow_stars = []
-        grey_stars = []
-        for i in range(review.rating):
-            yellow_stars.append(i)
-        for i in range(5-review.rating):
-            grey_stars.append(i)
+            newBook['reviews'].append({ 
+                'content': review.content,
+                'yellow_stars': yellow_stars,
+                'grey_stars':grey_stars,
+                'user': review.user,
+                'book': review.book,
+                'rating' : review.rating,
+                'created_at': review.created_at,
+            })
 
-        newBook['reviews'].append({ 
-            'content': review.content,
-            'yellow_stars': yellow_stars,
-            'grey_stars':grey_stars,
-            'user': review.user,
-            'book': review.book,
-            'rating' : review.rating,
-            'created_at': review.created_at,
-        })
-
-    context = {
-        "user" : user ,
-        "book" : newBook ,
-    }
-    return render(request,'book_info_page.html',context)
-
+        context = {
+            "user" : user ,
+            "book" : newBook ,
+        }
+        return render(request,'book_info_page.html',context)
+    else:
+        return redirect('/')
 
 # add review on this book
 def add_review_from_user(request,Book_Title):
@@ -175,15 +178,17 @@ def add_review_from_user(request,Book_Title):
 
 # get user data from database
 def get_user_info(request,UserId):
-    user = Get_User(UserId)
-    num_of_reviews = Get_number_of_Reviews_for_user(UserId)
-    print("num = " , num_of_reviews)
-    context = {
-        "user" : user ,
-        "num_of_reviews" : num_of_reviews,
-    }
-    return render(request,'user_profile.html',context)
-    
+    if 'userid' in request.session:
+        user = Get_User(UserId)
+        num_of_reviews = Get_number_of_Reviews_for_user(UserId)
+        print("num = " , num_of_reviews)
+        context = {
+            "user" : user ,
+            "num_of_reviews" : num_of_reviews,
+        }
+        return render(request,'user_profile.html',context)
+    else:
+        return redirect('/')  
     
 # logout method
 def log_out(request):
